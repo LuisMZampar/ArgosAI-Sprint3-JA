@@ -13,16 +13,21 @@ Acesso a uma conta no Azure para criação dos recursos necessários.
 
 1. Clonar o Repositório
 git clone https://github.com/LuisMZampar/ArgosAI-Sprint3-JA.git
+
 cd ArgosAI-Sprint3-JA
 
-2. Compilar e empacotar a aplicação
+3. Compilar e empacotar a aplicação
 mvn clean package
 
-3. Criação do Banco de Dados no Azure SQL
+4. Criação do Banco de Dados no Azure SQL
 Execute os seguintes comandos para criar o banco de dados e o servidor SQL:
+
 az group create --name rg-bcosql --location brazilsouth
+
 az sql server create -l brazilsouth -g rg-bcosql -n sqlserver-rm550531 -u admsql -p devops@Fiap2tds --enable-public-network true
+
 az sql db create -g rg-bcosql -s sqlserver-rm550531 -n argos --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
+
 az sql server firewall-rule create -g rg-bcosql -s sqlserver-rm550531 -n AllowAll --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
 5. Deploy no Azure App Service
