@@ -29,25 +29,31 @@ cd ArgosAI-Sprint3-JA
 🏗️ Compilar e Empacotar a Aplicação
 Utilize o Maven para compilar e empacotar a aplicação:
 
-mvn clean package
+- mvn clean package
+  
 
 🗄️ Criação do Banco de Dados no Azure SQL
 Execute os seguintes comandos para criar o banco de dados e o servidor SQL no Azure:
 
 Criar o grupo de recursos: az group create --name rg-bcosql --location brazilsouth
+
 Criar o servidor SQL: az sql server create -l brazilsouth -g rg-bcosql -n sqlserver-rm550531 -u admsql -p devops@Fiap2tds --enable-public-network true
+
 Criar o banco de dados: az sql db create -g rg-bcosql -s sqlserver-rm550531 -n argos --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
+
 Configurar regra de firewall para liberar acesso: az sql server firewall-rule create -g rg-bcosql -s sqlserver-rm550531 -n AllowAll --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
+
 
 ☁️ Deploy no Azure App Service
 Para fazer o deploy da aplicação no Azure App Service, utilize o seguinte comando:
 
-az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "target/ArgosAI-Sprint3-0.0.1-SNAPSHOT.jar"
+- az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "target/ArgosAI-Sprint3-0.0.1-SNAPSHOT.jar"
+  
 
 📊 Monitoramento de Logs
 Acompanhe os logs em tempo real com o seguinte comando:
 
-az webapp log tail --resource-group rg-argos --name argos-rm550531
+- az webapp log tail --resource-group rg-argos --name argos-rm550531
 
 
 ## Visão Geral
