@@ -16,10 +16,10 @@ git clone https://github.com/LuisMZampar/ArgosAI-Sprint3-JA.git
 
 cd ArgosAI-Sprint3-JA
 
-3. Compilar e empacotar a aplicação
+2. Compilar e empacotar a aplicação
 mvn clean package
 
-4. Criação do Banco de Dados no Azure SQL
+3. Criação do Banco de Dados no Azure SQL
 Execute os seguintes comandos para criar o banco de dados e o servidor SQL:
 
 az group create --name rg-bcosql --location brazilsouth
@@ -30,10 +30,10 @@ az sql db create -g rg-bcosql -s sqlserver-rm550531 -n argos --service-objective
 
 az sql server firewall-rule create -g rg-bcosql -s sqlserver-rm550531 -n AllowAll --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
-5. Deploy no Azure App Service
+4. Deploy no Azure App Service
 az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "target/ArgosAI-Sprint3-0.0.1-SNAPSHOT.jar"
 
-6. Monitoramento de Logs
+5. Monitoramento de Logs
 az webapp log tail --resource-group rg-argos --name argos-rm550531
 
 ## Visão Geral
