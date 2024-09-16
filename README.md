@@ -21,7 +21,7 @@ Acesso a uma conta no Azure para criação dos recursos necessários.
    
    -mvn clean package
 
-4. Criação do Banco de Dados no Azure SQL
+3. Criação do Banco de Dados no Azure SQL
    
 Execute os seguintes comandos para criar o banco de dados e o servidor SQL:
 
