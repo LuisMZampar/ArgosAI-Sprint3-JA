@@ -1,5 +1,29 @@
 # ArgosAI-Sprint3
 
+Para a matéria de DevOps
+
+Este projeto é uma API desenvolvida em Java usando Spring Boot, com integração ao banco de dados SQL no Azure. Ele oferece um CRUD completo para produtos, 
+clientes e vendas. Este documento fornece instruções detalhadas sobre como realizar o deploy e testar a API.
+
+Pré-requisitos
+Java 17 instalado.
+Maven para gerenciar as dependências.
+Azure CLI instalado e configurado.
+Acesso a uma conta no Azure para criação dos recursos necessários.
+
+1. Clonar o Repositório
+git clone https://github.com/LuisMZampar/ArgosAI-Sprint3-JA.git
+cd ArgosAI-Sprint3-JA
+
+2. Compilar e empacotar a aplicação
+mvn clean package
+
+3. Deploy no Azure App Service
+az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "target/ArgosAI-Sprint3-0.0.1-SNAPSHOT.jar"
+
+4. Monitoramento de Logs
+az webapp log tail --resource-group rg-argos --name argos-rm550531
+
 ## Visão Geral
 
 ArgosAI-Sprint3 é um projeto desenvolvido para gerenciar clientes e produtos em um sistema de recomendação. Ele faz uso de APIs RESTful, documentação com Swagger, e a arquitetura segue padrões como HATEOAS (Hypermedia as the Engine of Application State) para uma navegação mais dinâmica entre recursos.
