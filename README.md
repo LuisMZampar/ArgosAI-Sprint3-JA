@@ -28,7 +28,7 @@ cd ArgosAI-Sprint3-JA
 
 ---
 
-🏗️ Compilar e Empacotar a Aplicação
+## 🏗️ Compilar e Empacotar a Aplicação
 Utilize o Maven para compilar e empacotar a aplicação:
 
 - mvn clean package
@@ -48,14 +48,14 @@ Execute os seguintes comandos para criar o banco de dados e o servidor SQL no Az
 
 ---
 
-☁️ Deploy no Azure App Service
+## ☁️ Deploy no Azure App Service
 Para fazer o deploy da aplicação no Azure App Service, utilize o seguinte comando:
 
 - az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "target/ArgosAI-Sprint3-0.0.1-SNAPSHOT.jar"
 
 ---
 
-📊 Monitoramento de Logs
+## 📊 Monitoramento de Logs
 Acompanhe os logs em tempo real com o seguinte comando:
 
 - az webapp log tail --resource-group rg-argos --name argos-rm550531
