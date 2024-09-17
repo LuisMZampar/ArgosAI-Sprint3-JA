@@ -32,16 +32,16 @@ Utilize o Maven para compilar e empacotar a aplicação:
 - mvn clean package
   
 
-🗄️ Criação do Banco de Dados no Azure SQL
+🗄️ **Criação do Banco de Dados no Azure SQL**
 Execute os seguintes comandos para criar o banco de dados e o servidor SQL no Azure:
 
-Criar o grupo de recursos: az group create --name rg-bcosql --location brazilsouth
+**Criar o grupo de recursos:** az group create --name rg-bcosql --location brazilsouth
 
-Criar o servidor SQL: az sql server create -l brazilsouth -g rg-bcosql -n sqlserver-rm550531 -u admsql -p devops@Fiap2tds --enable-public-network true
+**Criar o servidor SQL:** az sql server create -l brazilsouth -g rg-bcosql -n sqlserver-rm550531 -u admsql -p devops@Fiap2tds --enable-public-network true
 
-Criar o banco de dados: az sql db create -g rg-bcosql -s sqlserver-rm550531 -n argos --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
+**Criar o banco de dados:** az sql db create -g rg-bcosql -s sqlserver-rm550531 -n argos --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
 
-Configurar regra de firewall para liberar acesso: az sql server firewall-rule create -g rg-bcosql -s sqlserver-rm550531 -n AllowAll --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
+**Configurar regra de firewall para liberar acesso:** az sql server firewall-rule create -g rg-bcosql -s sqlserver-rm550531 -n AllowAll --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
 
 ☁️ Deploy no Azure App Service
