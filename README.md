@@ -23,8 +23,8 @@ Antes de iniciar o deploy, certifique-se de ter as seguintes ferramentas instala
 
 Primeiro, faça o clone do repositório:
 
-git clone https://github.com/LuisMZampar/ArgosAI-Sprint3-JA.git
-cd ArgosAI-Sprint3-JA
+- git clone https://github.com/LuisMZampar/ArgosAI-Sprint3-JA.git
+- cd ArgosAI-Sprint3-JA
 
 ---
 
