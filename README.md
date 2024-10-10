@@ -28,16 +28,16 @@ mvn clean package -DskipTests
 ## 🗄️ Criação do Banco de Dados no Azure SQL
 Execute os seguintes comandos para criar o banco de dados e o servidor SQL no Azure:
 
-# Criar o grupo de recursos
+Criar o grupo de recursos
 az group create --name rg-bcosql --location brazilsouth
 
-# Criar o servidor SQL
+Criar o servidor SQL
 az sql server create --name sqlserver-rm550531 --resource-group rg-bcosql --location brazilsouth --admin-user admlnx --admin-password Fiap@2tdsvms
 
-# Configurar regra de firewall para liberar acesso
+Configurar regra de firewall para liberar acesso
 az sql server firewall-rule create --resource-group rg-bcosql --server sqlserver-rm550531 --name AllowAllIPs --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
 
-# Criar o banco de dados
+Criar o banco de dados
 az sql db create --resource-group rg-bcosql --server sqlserver-rm550531 --name argos --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
 
 
