@@ -3,10 +3,10 @@
 Para a matéria de DevOps
 Link do Youtube: (https://youtu.be/9kuN30muiZc?si=NITEKfyvPiqp-ov9)
 
-🌍 ArgosAI Sprint 3 - API
+## 🌍 ArgosAI Sprint 3 - API
 Este projeto é uma API desenvolvida em Java usando Spring Boot, com integração ao banco de dados SQL no Azure. Ele oferece um CRUD completo para produtos, clientes e vendas. Este documento fornece instruções detalhadas sobre como realizar o deploy e testar a API.
 
-⚙️ Pré-requisitos
+## ⚙️ Pré-requisitos
 Antes de iniciar o deploy, certifique-se de ter as seguintes ferramentas instaladas:
 
 Java 17 ou superior
@@ -14,18 +14,18 @@ Maven para gerenciamento de dependências
 Azure CLI configurado
 Acesso a uma conta no Azure
 
-📥 Clonar o Repositório
+## 📥 Clonar o Repositório
 Primeiro, faça o clone do repositório:
 
 git clone https://github.com/LuisMZampar/ArgosAI-Sprint3-JA.git
 cd ArgosAI-Sprint3-JA
 
-🏗️ Compilar e Empacotar a Aplicação
+## 🏗️ Compilar e Empacotar a Aplicação
 Utilize o Maven para compilar e empacotar a aplicação:
 
 mvn clean package -DskipTests
 
-🗄️ Criação do Banco de Dados no Azure SQL
+## 🗄️ Criação do Banco de Dados no Azure SQL
 Execute os seguintes comandos para criar o banco de dados e o servidor SQL no Azure:
 
 # Criar o grupo de recursos
@@ -41,13 +41,13 @@ az sql server firewall-rule create --resource-group rg-bcosql --server sqlserver
 az sql db create --resource-group rg-bcosql --server sqlserver-rm550531 --name argos --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
 
 
-☁️ Deploy no Azure App Service
+## ☁️ Deploy no Azure App Service
 Para fazer o deploy da aplicação no Azure App Service, utilize o seguinte comando:
 
 az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "target/ArgosAI-Sprint3-0.0.1-SNAPSHOT.jar"
 
 
-📦 Publicar Imagem no Azure Container Registry (ACR)
+## 📦 Publicar Imagem no Azure Container Registry (ACR)
 Realize as etapas para criar e enviar a imagem Docker para o ACR:
 
 # Criar o ACR
@@ -72,16 +72,16 @@ az acr update -n rm550531acr --admin-enabled true
 az acr credential show --name rm550531acr
 
 
-📊 Monitoramento de Logs
+## 📊 Monitoramento de Logs
 Acompanhe os logs em tempo real com o seguinte comando:
 
 az webapp log tail --resource-group rg-argos --name argos-rm550531
 
 
-Visão Geral
+## Visão Geral
 O projeto ArgosAI-Sprint3 é desenvolvido para gerenciar clientes e produtos em um sistema de recomendação. Ele faz uso de APIs RESTful, documentação com Swagger, e a arquitetura segue padrões como HATEOAS (Hypermedia as the Engine of Application State) para uma navegação mais dinâmica entre recursos.
 
-Tecnologias Utilizadas
+## Tecnologias Utilizadas
 Java 17: Linguagem principal do projeto.
 Spring Boot: Framework para simplificar o desenvolvimento de APIs RESTful.
 Maven: Ferramenta de gerenciamento de dependências e build.
@@ -96,7 +96,7 @@ Fly.io: Plataforma para deployment da aplicação.
 Arquitetura e Design Pattern
 A arquitetura segue o padrão Layered Architecture (Camadas), separando responsabilidades em Controller, Service e Repository. O projeto utiliza o pattern DTO para transferir dados entre a API e serviços, e o ModelMapper facilita a conversão entre modelos e DTOs.
 
-Endpoints
+## Endpoints
 Clientes
 GET /api/clientes: Lista todos os clientes.
 GET /api/clientes/{id}: Obtém um cliente por ID.
