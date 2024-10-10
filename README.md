@@ -1,4 +1,4 @@
-## ArgosAI-CheckPoint
+# ArgosAI-CheckPoint
 
 Para a matéria de DevOps
 Link do Youtube: (https://youtu.be/9kuN30muiZc?si=NITEKfyvPiqp-ov9)
@@ -50,25 +50,25 @@ az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "tar
 ## 📦 Publicar Imagem no Azure Container Registry (ACR)
 Realize as etapas para criar e enviar a imagem Docker para o ACR:
 
-# Criar o ACR
+## Criar o ACR
 az acr create --resource-group rg-bcosql --name rm550531acr --sku Basic --location brazilsouth
 
-# Login no ACR
+## Login no ACR
 az acr login --name rm550531acr --expose-token
 
-# Construir a imagem Docker
+## Construir a imagem Docker
 docker build -t rm550531/argos-app:1.0 .
 
-# Tag da imagem para o ACR
+## Tag da imagem para o ACR
 docker tag rm550531/argos-app:1.0 rm550531acr.azurecr.io/argos-app:1.0
 
-# Push da imagem para o ACR
+## Push da imagem para o ACR
 docker push rm550531acr.azurecr.io/argos-app:1.0
 
-# Atualizar ACR para habilitar login de administrador
+## Atualizar ACR para habilitar login de administrador
 az acr update -n rm550531acr --admin-enabled true
 
-# Obter as credenciais do ACR
+## Obter as credenciais do ACR
 az acr credential show --name rm550531acr
 
 
@@ -78,7 +78,7 @@ Acompanhe os logs em tempo real com o seguinte comando:
 az webapp log tail --resource-group rg-argos --name argos-rm550531
 
 
-## Visão Geral
+# Visão Geral
 O projeto ArgosAI-Sprint3 é desenvolvido para gerenciar clientes e produtos em um sistema de recomendação. Ele faz uso de APIs RESTful, documentação com Swagger, e a arquitetura segue padrões como HATEOAS (Hypermedia as the Engine of Application State) para uma navegação mais dinâmica entre recursos.
 
 ## Tecnologias Utilizadas
