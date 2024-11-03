@@ -17,18 +17,16 @@ Acesso a uma conta no Azure
 
 ## Arquivo infraACR.sh
 
-###
-### Variáveis
-###
+#Variáveis
 grupoRecursos=rg-docker
 regiao=eastus
 nomeACR=javamsqlrm550531
 skuACR=Basic
 
-###
-### Criação do Grupo de Recursos
-###
-# Verifica a existência do grupo de recursos e se não existir, cria
+
+#Criação do Grupo de Recursos
+Verifica a existência do grupo de recursos e se não existir, cria
+
 if [ $(az group exists --name $grupoRecursos) = true ]; then
     echo "O grupo de recursos $grupoRecursos já existe"
 else
@@ -37,10 +35,9 @@ else
     echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
 fi
 
-###
-### Criação do Azure Container Registry
-###
+# Criação do Azure Container Registry
 # Verifica se o ACR já existe
+
 if az acr show --name $nomeACR --resource-group $grupoRecursos &> /dev/null; then
     echo "O ACR $nomeACR já existe"
 else
@@ -52,21 +49,21 @@ else
     echo "Habilitado com sucesso o usuário Administrador para o ACR $nomeACR"
 fi
 
-#
 # Essa parte do Script só é recomendada para fins de testes e aprendizado
-#
 # Recuperar as credenciais do usuário administrador, armazenar em variáveis de ambiente e mostrar as credenciais
+
 ADMIN_USER=$(az acr credential show --name $nomeACR --query "username" -o tsv)
 ADMIN_PASSWORD=$(az acr credential show --name $nomeACR --query "passwords[0].value" -o tsv)
 
 # Cria variáveis de ambiente
+
 export ACR_ADMIN_USER=$ADMIN_USER
 export ACR_ADMIN_PASSWORD=$ADMIN_PASSWORD
 
 # Mostra as variáveis de ambiente
+
 echo $ACR_ADMIN_USER
 echo $ACR_ADMIN_PASSWORD
-
 
 
 # Visão Geral
