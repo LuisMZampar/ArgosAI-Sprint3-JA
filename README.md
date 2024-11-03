@@ -1,7 +1,7 @@
 # ArgosAI-CheckPoint
 
 Para a matéria de DevOps
-Link do Youtube: 
+Link do Youtube: https://youtu.be/pma45fEx14M?si=s7mykNqgvFpGWUvU
 
 ## 🌍 ArgosAI Sprint 3 - API
 Este projeto é uma API desenvolvida em Java usando Spring Boot, com integração ao banco de dados SQL no Azure. Ele oferece um CRUD completo para produtos, clientes e vendas. Este documento fornece instruções detalhadas sobre como realizar o deploy e testar a API.
