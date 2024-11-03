@@ -109,7 +109,7 @@ az container create \
 
 --dns-name-label $nomeACI \
 
---ports 80
+--ports 8080
 
 ----------
 
@@ -128,7 +128,7 @@ planService=planACRWebApp
 sku=F1
 appName=acrwebappRM550531
 imageACR=rm550531acr.azurecr.io/argos-app:1.0
-port=80
+port=8080
 
 if [ $(az group exists --name $grupoRecursos) = true ]; then
     echo "O grupo de recursos $grupoRecursos já existe"
@@ -147,7 +147,6 @@ else
     echo "Plano de serviço $planService criado com sucesso"
 fi
 
-### Cria o Serviço de Aplicativo se não existir
 if az webapp show --name $appName --resource-group $grupoRecursos &> /dev/null; then
     echo "O Serviço de Aplicativo $appName já existe"
     
@@ -159,10 +158,8 @@ fi
 
 if az webapp show --name $appName --resource-group $grupoRecursos > /dev/null 2>&1; then
     az webapp config appsettings set --resource-group $grupoRecursos --name $appName --settings WEBSITES_PORT=$port
-    echo "Serviço de Aplicativo $appName configurado para escutar na porta $port com sucesso"
     
 fi
-
 
 ----------
 
@@ -171,6 +168,52 @@ chmod +x infraWebApp.sh
 
 ----------
 
+## Inline Script 
+
+az container create \
+
+--resource-group $(grupoRecursos) \
+
+--name $(nomeACI) \
+
+--image $(imageACRnoLabel):$(Build.BuildId) \
+
+--cpu 2 \
+
+--memory 2 \
+
+--registry-login-server $(serverACR) \
+
+--registry-username $(userACR) \
+
+--registry-password $(passACR) \
+
+--ip-address Public \
+
+----------
+
+## Variavel
+
+grupoRecursos: rg-bcosql
+imageACR: rm550531acr.azurecr.io/argos-app:1.0
+imageACRnoLabel: rm550531acr.azurecr.io/argos-app
+nomeACI: argosrm550531
+passACR: <Senha> // GIT HUN NAO DEIXA COLOCAR SENHA
+serverACR: rm550531acr.azurecr.io
+
+----------
+
+## Caso deseje verificar se a Imagem Existe no ACR
+
+az acr repository show-tags --name rm550531acr --repository argos-app --output table
+
+----------
+
+## Caso deseje confirmar as Credenciais do ACR
+
+az acr credential show --name rm550531acr
+
+----------
 
 # Visão Geral
 O projeto ArgosAI-Sprint3 é desenvolvido para gerenciar clientes e produtos em um sistema de recomendação. Ele faz uso de APIs RESTful, documentação com Swagger, e a arquitetura segue padrões como HATEOAS (Hypermedia as the Engine of Application State) para uma navegação mais dinâmica entre recursos.
