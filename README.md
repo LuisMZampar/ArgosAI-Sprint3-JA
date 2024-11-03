@@ -17,47 +17,57 @@ Acesso a uma conta no Azure
 
 ## Arquivo infraACR.sh
 
-grupoRecursos=rg-docker
+grupoRecursos=rg-bcosql
 
-regiao=eastus
+regiao=brazilsouth
 
-nomeACR=javamsqlrm550531
+nomeServidorSQL=sqlserver-rm550531
+
+adminSQL=admlnx
+
+senhaSQL=Fiap@2tdsvms
+
+nomeBanco=argos
+
+nomeACR=rm550531acr
 
 skuACR=Basic
-
-Verifica a existência do grupo de recursos e se não existir, cria
 
 if [ $(az group exists --name $grupoRecursos) = true ]; then
     echo "O grupo de recursos $grupoRecursos já existe"
 
 else
-    
-az group create --name $grupoRecursos --location $regiao
-echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
+    az group create --name $grupoRecursos --location $regiao
+    echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
     
 fi
+
+az sql server create --name $nomeServidorSQL --resource-group $grupoRecursos --location $regiao --admin-user $adminSQL --admin-password $senhaSQL
+echo "Servidor SQL $nomeServidorSQL criado com sucesso."
+
+az sql server firewall-rule create --resource-group $grupoRecursos --server $nomeServidorSQL --name AllowAllIPs --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
+echo "Regra de firewall para acesso de todos os IPs configurada com sucesso."
+
+az sql db create --resource-group $grupoRecursos --server $nomeServidorSQL --name $nomeBanco --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
+echo "Banco de dados $nomeBanco criado com sucesso no servidor $nomeServidorSQL."
 
 if az acr show --name $nomeACR --resource-group $grupoRecursos &> /dev/null; then
     echo "O ACR $nomeACR já existe"
     
 else
-    
-az acr create --resource-group $grupoRecursos --name $nomeACR --sku $skuACR
-echo "ACR $nomeACR criado com sucesso"
-   
-az acr update --name $nomeACR --resource-group $grupoRecursos --admin-enabled true
-echo "Habilitado com sucesso o usuário Administrador para o ACR $nomeACR"
+    az acr create --resource-group $grupoRecursos --name $nomeACR --sku $skuACR --location $regiao
+    echo "ACR $nomeACR criado com sucesso"
     
 fi
 
-ADMIN_USER=$(az acr credential show --name $nomeACR --query "username" -o tsv)
-ADMIN_PASSWORD=$(az acr credential show --name $nomeACR --query "passwords[0].value" -o tsv)
+az acr login --name $nomeACR --expose-token
+echo "Login no ACR $nomeACR realizado com sucesso."
 
-export ACR_ADMIN_USER=$ADMIN_USER
-export ACR_ADMIN_PASSWORD=$ADMIN_PASSWORD
+----------
 
-echo $ACR_ADMIN_USER
-echo $ACR_ADMIN_PASSWORD
+chmod +x infraACR.sh
+
+./infraACR.sh
 
 ----------
 
