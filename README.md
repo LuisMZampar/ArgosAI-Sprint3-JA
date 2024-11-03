@@ -18,30 +18,38 @@ Acesso a uma conta no Azure
 ## Arquivo infraACR.sh
 
 #Variáveis
+
 grupoRecursos=rg-docker
+
 regiao=eastus
+
 nomeACR=javamsqlrm550531
+
 skuACR=Basic
 
 Verifica a existência do grupo de recursos e se não existir, cria
 
 if [ $(az group exists --name $grupoRecursos) = true ]; then
     echo "O grupo de recursos $grupoRecursos já existe"
+
 else
-    # Cria o grupo de recursos
+    
     az group create --name $grupoRecursos --location $regiao
     echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
+    
 fi
 
 if az acr show --name $nomeACR --resource-group $grupoRecursos &> /dev/null; then
     echo "O ACR $nomeACR já existe"
+    
 else
-    # Cria o ACR
+    
     az acr create --resource-group $grupoRecursos --name $nomeACR --sku $skuACR
     echo "ACR $nomeACR criado com sucesso"
-    # Habilita o Usuário Administrador no Azure Container Registry
+   
     az acr update --name $nomeACR --resource-group $grupoRecursos --admin-enabled true
     echo "Habilitado com sucesso o usuário Administrador para o ACR $nomeACR"
+    
 fi
 
 ADMIN_USER=$(az acr credential show --name $nomeACR --query "username" -o tsv)
