@@ -1,7 +1,7 @@
 # ArgosAI-CheckPoint
 
 Para a matéria de DevOps
-Link do Youtube: (https://youtu.be/9kuN30muiZc?si=NITEKfyvPiqp-ov9)
+Link do Youtube: 
 
 ## 🌍 ArgosAI Sprint 3 - API
 Este projeto é uma API desenvolvida em Java usando Spring Boot, com integração ao banco de dados SQL no Azure. Ele oferece um CRUD completo para produtos, clientes e vendas. Este documento fornece instruções detalhadas sobre como realizar o deploy e testar a API.
@@ -14,68 +14,59 @@ Maven para gerenciamento de dependências
 Azure CLI configurado
 Acesso a uma conta no Azure
 
-## 📥 Clonar o Repositório
-Primeiro, faça o clone do repositório:
 
-git clone https://github.com/LuisMZampar/ArgosAI-Sprint3-JA.git
-cd ArgosAI-Sprint3-JA
+## Arquivo infraACR.sh
 
-## 🏗️ Compilar e Empacotar a Aplicação
-Utilize o Maven para compilar e empacotar a aplicação:
+###
+### Variáveis
+###
+grupoRecursos=rg-docker
+regiao=eastus
+nomeACR=javamsqlrm550531
+skuACR=Basic
 
-mvn clean package -DskipTests
+###
+### Criação do Grupo de Recursos
+###
+# Verifica a existência do grupo de recursos e se não existir, cria
+if [ $(az group exists --name $grupoRecursos) = true ]; then
+    echo "O grupo de recursos $grupoRecursos já existe"
+else
+    # Cria o grupo de recursos
+    az group create --name $grupoRecursos --location $regiao
+    echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
+fi
 
-## 🗄️ Criação do Banco de Dados no Azure SQL
-Execute os seguintes comandos para criar o banco de dados e o servidor SQL no Azure:
+###
+### Criação do Azure Container Registry
+###
+# Verifica se o ACR já existe
+if az acr show --name $nomeACR --resource-group $grupoRecursos &> /dev/null; then
+    echo "O ACR $nomeACR já existe"
+else
+    # Cria o ACR
+    az acr create --resource-group $grupoRecursos --name $nomeACR --sku $skuACR
+    echo "ACR $nomeACR criado com sucesso"
+    # Habilita o Usuário Administrador no Azure Container Registry
+    az acr update --name $nomeACR --resource-group $grupoRecursos --admin-enabled true
+    echo "Habilitado com sucesso o usuário Administrador para o ACR $nomeACR"
+fi
 
-Criar o grupo de recursos
-az group create --name rg-bcosql --location brazilsouth
+#
+# Essa parte do Script só é recomendada para fins de testes e aprendizado
+#
+# Recuperar as credenciais do usuário administrador, armazenar em variáveis de ambiente e mostrar as credenciais
+ADMIN_USER=$(az acr credential show --name $nomeACR --query "username" -o tsv)
+ADMIN_PASSWORD=$(az acr credential show --name $nomeACR --query "passwords[0].value" -o tsv)
 
-Criar o servidor SQL
-az sql server create --name sqlserver-rm550531 --resource-group rg-bcosql --location brazilsouth --admin-user admlnx --admin-password Fiap@2tdsvms
+# Cria variáveis de ambiente
+export ACR_ADMIN_USER=$ADMIN_USER
+export ACR_ADMIN_PASSWORD=$ADMIN_PASSWORD
 
-Configurar regra de firewall para liberar acesso
-az sql server firewall-rule create --resource-group rg-bcosql --server sqlserver-rm550531 --name AllowAllIPs --start-ip-address 0.0.0.0 --end-ip-address 255.255.255.255
+# Mostra as variáveis de ambiente
+echo $ACR_ADMIN_USER
+echo $ACR_ADMIN_PASSWORD
 
-Criar o banco de dados
-az sql db create --resource-group rg-bcosql --server sqlserver-rm550531 --name argos --service-objective Basic --backup-storage-redundancy Local --zone-redundant false
-
-
-## ☁️ Deploy no Azure App Service
-Para fazer o deploy da aplicação no Azure App Service, utilize o seguinte comando:
-
-az webapp deploy --resource-group rg-argos --name argos-rm550531 --src-path "target/ArgosAI-Sprint3-0.0.1-SNAPSHOT.jar"
-
-
-## 📦 Publicar Imagem no Azure Container Registry (ACR)
-Realize as etapas para criar e enviar a imagem Docker para o ACR:
-
-## Criar o ACR
-az acr create --resource-group rg-bcosql --name rm550531acr --sku Basic --location brazilsouth
-
-## Login no ACR
-az acr login --name rm550531acr --expose-token
-
-## Construir a imagem Docker
-docker build -t rm550531/argos-app:1.0 .
-
-## Tag da imagem para o ACR
-docker tag rm550531/argos-app:1.0 rm550531acr.azurecr.io/argos-app:1.0
-
-## Push da imagem para o ACR
-docker push rm550531acr.azurecr.io/argos-app:1.0
-
-## Atualizar ACR para habilitar login de administrador
-az acr update -n rm550531acr --admin-enabled true
-
-## Obter as credenciais do ACR
-az acr credential show --name rm550531acr
-
-
-## 📊 Monitoramento de Logs
-Acompanhe os logs em tempo real com o seguinte comando:
-
-az webapp log tail --resource-group rg-argos --name argos-rm550531
 
 
 # Visão Geral
