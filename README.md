@@ -71,6 +71,106 @@ chmod +x infraACR.sh
 
 ----------
 
+## Arquivo infraACR.sh
+
+grupoRecursos=rg-bcosql
+
+nomeACR=rm550531acr
+
+imageACR=rm550531acr.azurecr.io/argos-app:1.0
+
+serverACR=rm550531acr.azurecr.io
+
+userACR=$(az acr credential show --name $nomeACR --query "username" -o tsv)
+
+passACR=$(az acr credential show --name $nomeACR --query "passwords[0].value" -o tsv)
+
+nomeACI=argosrm550531
+
+az container create \
+
+--resource-group $grupoRecursos \
+
+--name $nomeACI \
+
+--image $imageACR \
+
+--cpu 2 \
+
+--memory 2 \
+
+--registry-login-server $serverACR \
+
+--registry-username $userACR \
+
+--registry-password $passACR \
+
+--ip-address Public \
+
+--dns-name-label $nomeACI \
+
+--ports 80
+
+----------
+
+chmod +x infraACI.sh
+./infraACI.sh
+
+----------
+
+## Arquivo infraWebApp.sh
+
+#!/bin/bash
+
+grupoRecursos=rg-bcosql
+regiao=brazilsouth
+planService=planACRWebApp
+sku=F1
+appName=acrwebappRM550531
+imageACR=rm550531acr.azurecr.io/argos-app:1.0
+port=80
+
+if [ $(az group exists --name $grupoRecursos) = true ]; then
+    echo "O grupo de recursos $grupoRecursos já existe"
+    
+else
+    az group create --name $grupoRecursos --location $regiao
+    echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
+    
+fi
+
+if az appservice plan show --name $planService --resource-group $grupoRecursos &> /dev/null; then
+    echo "O plano de serviço $planService já existe"
+    
+else
+    az appservice plan create --name $planService --resource-group $grupoRecursos --is-linux --sku $sku
+    echo "Plano de serviço $planService criado com sucesso"
+fi
+
+### Cria o Serviço de Aplicativo se não existir
+if az webapp show --name $appName --resource-group $grupoRecursos &> /dev/null; then
+    echo "O Serviço de Aplicativo $appName já existe"
+    
+else
+    az webapp create --resource-group $grupoRecursos --plan $planService --name $appName --deployment-container-image-name $imageACR
+    echo "Serviço de Aplicativo $appName criado com sucesso"
+    
+fi
+
+if az webapp show --name $appName --resource-group $grupoRecursos > /dev/null 2>&1; then
+    az webapp config appsettings set --resource-group $grupoRecursos --name $appName --settings WEBSITES_PORT=$port
+    echo "Serviço de Aplicativo $appName configurado para escutar na porta $port com sucesso"
+    
+fi
+
+
+----------
+
+chmod +x infraWebApp.sh
+./infraWebApp.sh
+
+----------
+
 
 # Visão Geral
 O projeto ArgosAI-Sprint3 é desenvolvido para gerenciar clientes e produtos em um sistema de recomendação. Ele faz uso de APIs RESTful, documentação com Swagger, e a arquitetura segue padrões como HATEOAS (Hypermedia as the Engine of Application State) para uma navegação mais dinâmica entre recursos.
