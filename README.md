@@ -17,8 +17,6 @@ Acesso a uma conta no Azure
 
 ## Arquivo infraACR.sh
 
-#Variáveis
-
 grupoRecursos=rg-docker
 
 regiao=eastus
@@ -34,8 +32,8 @@ if [ $(az group exists --name $grupoRecursos) = true ]; then
 
 else
     
-    az group create --name $grupoRecursos --location $regiao
-    echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
+az group create --name $grupoRecursos --location $regiao
+echo "Grupo de recursos $grupoRecursos criado na localização $regiao"
     
 fi
 
@@ -44,11 +42,11 @@ if az acr show --name $nomeACR --resource-group $grupoRecursos &> /dev/null; the
     
 else
     
-    az acr create --resource-group $grupoRecursos --name $nomeACR --sku $skuACR
-    echo "ACR $nomeACR criado com sucesso"
+az acr create --resource-group $grupoRecursos --name $nomeACR --sku $skuACR
+echo "ACR $nomeACR criado com sucesso"
    
-    az acr update --name $nomeACR --resource-group $grupoRecursos --admin-enabled true
-    echo "Habilitado com sucesso o usuário Administrador para o ACR $nomeACR"
+az acr update --name $nomeACR --resource-group $grupoRecursos --admin-enabled true
+echo "Habilitado com sucesso o usuário Administrador para o ACR $nomeACR"
     
 fi
 
