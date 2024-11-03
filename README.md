@@ -114,6 +114,7 @@ az container create \
 ----------
 
 chmod +x infraACI.sh
+
 ./infraACI.sh
 
 ----------
@@ -123,11 +124,17 @@ chmod +x infraACI.sh
 #!/bin/bash
 
 grupoRecursos=rg-bcosql
+
 regiao=brazilsouth
+
 planService=planACRWebApp
+
 sku=F1
+
 appName=acrwebappRM550531
+
 imageACR=rm550531acr.azurecr.io/argos-app:1.0
+
 port=8080
 
 if [ $(az group exists --name $grupoRecursos) = true ]; then
@@ -164,6 +171,7 @@ fi
 ----------
 
 chmod +x infraWebApp.sh
+
 ./infraWebApp.sh
 
 ----------
@@ -195,10 +203,15 @@ az container create \
 ## Variavel
 
 grupoRecursos: rg-bcosql
+
 imageACR: rm550531acr.azurecr.io/argos-app:1.0
+
 imageACRnoLabel: rm550531acr.azurecr.io/argos-app
+
 nomeACI: argosrm550531
+
 passACR: <Senha> // GIT HUN NAO DEIXA COLOCAR SENHA
+
 serverACR: rm550531acr.azurecr.io
 
 ----------
